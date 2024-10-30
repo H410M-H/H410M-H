@@ -1,5 +1,3 @@
-## Hi there 👋
-
 <h1 align="center">Hi 👋, I'm H470M-H</h1>
 <h3 align="center">I’m a professional Full stack Web/ Mobile Apps Developer skilled in react & flutter. Committed to leveraging skills and knowledge to support innovative projects and drive technological advancements.</h3>
 
