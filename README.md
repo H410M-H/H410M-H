@@ -1,17 +1,17 @@
 <h1 align="center">Hi 👋, I'm H470M-H</h1>
-<h3 align="center">I’m a professional Full stack Web/ Mobile Apps Developer skilled in react & flutter. Committed to leveraging skills and knowledge to support innovative projects and drive technological advancements.</h3>
+<h3 align="center">I’m a professional Full stack Web/ Mobile Apps Developer skilled in react (next.js) & flutter. Committed to leveraging skills and knowledge to support innovative projects and drive technological advancements.</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=h410m-h&label=Profile%20views&color=0e75b6&style=flat" alt="h410m-h" /> </p>
 
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=h410m-h" alt="h410m-h" /></a> </p>
 
-- 🔭 I’m currently working on [msns-lms](https://github.com/H410M-H/lms-web.git)
+- 🔭 I’m currently working on [msns-lms](https://github.com/H410M-H/msns-build.git)
 
 - 🌱 I’m currently learning **Cybersecurity, Python, ML, LLMs and AI**
 
-- 👯 I’m looking to collaborate on [msns-web-v1](https://github.com/H410M-H/msns-web-v1.git)
+- 👯 I’m looking to collaborate on [msns-web-v1](https://github.com/H410M-H/msns-home.git)
 
-- 🤝 I’m looking for help with [msns-web-v1](https://github.com/H410M-H/msns-web-v1.git)
+- 🤝 I’m looking for help with [msns-web-v1](https://github.com/H410M-H/msns-build.git)
 
 - 💬 Ask me about **react, next.js, flutter, JavaScript, Tailwind CSS, Full-Stack Development**
 
