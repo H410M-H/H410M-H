@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm H470M-H</h1>
-<h3 align="center">I’m a professional Full stack Web/ Mobile Apps Developer skilled in react (next.js) & flutter. Committed to leveraging skills and knowledge to support innovative projects and drive technological advancements.</h3>
+<h3 align="center">Full stack Web/ Mobile Apps Developer skilled in react (next.js) & flutter. Committed to leveraging skills and knowledge to support innovative projects and drive technological advancements.</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=h410m-h&label=Profile%20views&color=0e75b6&style=flat" alt="h410m-h" /> </p>
 
