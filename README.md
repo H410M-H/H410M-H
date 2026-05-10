@@ -5,13 +5,13 @@
 
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=h410m-h" alt="h410m-h" /></a> </p>
 
-- 🔭 I’m currently working on [msns-lms](https://github.com/H410M-H/msns-build.git)
+- 🔭 I’m currently working on [Executive Mochi](https://github.com/H410M-H/emochipk.git)
 
 - 🌱 I’m currently learning **Cybersecurity, Python, ML, LLMs and AI**
 
 - 👯 I’m looking to collaborate on [msns-web-v1](https://github.com/H410M-H/msns-home.git)
 
-- 🤝 I’m looking for help with [msns-web-v1](https://github.com/H410M-H/msns-build.git)
+- 🤝 I’m looking for help with [msns-lms](https://github.com/H410M-H/msns-build.git)
 
 - 💬 Ask me about **react, next.js, flutter, JavaScript, Tailwind CSS, Full-Stack Development**
 
