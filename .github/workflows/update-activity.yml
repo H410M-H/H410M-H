@@ -1,0 +1,135 @@
+name: Update Recent GitHub Activity
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch recent public activity and update README
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          SELF_REPO: ${{ github.repository }}
+        run: |
+          node <<'EOF'
+          const fs = require("node:fs");
+
+          const username = process.env.USERNAME;
+          const selfRepo = process.env.SELF_REPO;
+          const headers = {
+            Accept: "application/vnd.github+json",
+            "User-Agent": "github-activity-updater",
+          };
+          if (process.env.GH_TOKEN) {
+            headers.Authorization = `Bearer ${process.env.GH_TOKEN}`;
+          }
+
+          function formatEvent(ev) {
+            const repo = ev.repo?.name;
+            if (!repo || repo === selfRepo) return null;
+            const repoLink = `[${repo}](https://github.com/${repo})`;
+            const p = ev.payload || {};
+
+            switch (ev.type) {
+              case "PushEvent": {
+                const count = p.size ?? p.commits?.length ?? 1;
+                const branch = (p.ref || "").replace("refs/heads/", "");
+                const suffix = branch ? ` (\`${branch}\`)` : "";
+                return `🚀 Pushed ${count} commit${count === 1 ? "" : "s"} to ${repoLink}${suffix}`;
+              }
+              case "PullRequestEvent": {
+                const num = p.pull_request?.number ?? p.number;
+                const url = p.pull_request?.html_url || `https://github.com/${repo}/pull/${num}`;
+                const action = p.action === "closed" && p.pull_request?.merged ? "Merged" : (p.action || "Updated");
+                const verb = action.charAt(0).toUpperCase() + action.slice(1);
+                return `🔀 ${verb} PR [#${num}](${url}) in ${repoLink}`;
+              }
+              case "IssuesEvent": {
+                const num = p.issue?.number;
+                const url = p.issue?.html_url || `https://github.com/${repo}/issues/${num}`;
+                const verb = (p.action || "updated").replace(/^./, (c) => c.toUpperCase());
+                return `🐛 ${verb} issue [#${num}](${url}) in ${repoLink}`;
+              }
+              case "IssueCommentEvent": {
+                const num = p.issue?.number;
+                const url = p.comment?.html_url || p.issue?.html_url || `https://github.com/${repo}`;
+                return `💬 Commented on [#${num}](${url}) in ${repoLink}`;
+              }
+              case "CreateEvent": {
+                if (p.ref_type === "repository") return `✨ Created repository ${repoLink}`;
+                return `🌿 Created ${p.ref_type} \`${p.ref}\` in ${repoLink}`;
+              }
+              case "ReleaseEvent": {
+                const tag = p.release?.tag_name || "release";
+                const url = p.release?.html_url || `https://github.com/${repo}/releases`;
+                return `🏷️ Released [${tag}](${url}) in ${repoLink}`;
+              }
+              case "ForkEvent":
+                return `🍴 Forked ${repoLink}`;
+              case "WatchEvent":
+                return `⭐ Starred ${repoLink}`;
+              default:
+                return null;
+            }
+          }
+
+          (async () => {
+            const res = await fetch(`https://api.github.com/users/${username}/events/public?per_page=40`, { headers });
+            if (!res.ok) {
+              throw new Error(`GitHub API failed: ${res.status} ${await res.text()}`);
+            }
+            const events = await res.json();
+            const lines = [];
+            const seen = new Set();
+
+            for (const ev of events) {
+              const formatted = formatEvent(ev);
+              if (!formatted || seen.has(formatted)) continue;
+              seen.add(formatted);
+              lines.push(`- ${formatted}`);
+              if (lines.length >= 6) break;
+            }
+
+            const block = lines.length
+              ? lines.join("\n")
+              : "- 🛠️ Building in private repositories — check back soon!";
+
+            const readme = fs.readFileSync("README.md", "utf8");
+            const pattern = /(<!--START_SECTION:activity-->)[\s\S]*?(<!--END_SECTION:activity-->)/;
+            if (!pattern.test(readme)) {
+              throw new Error("Activity markers not found in README.md");
+            }
+            const updated = readme.replace(pattern, `$1\n${block}\n$2`);
+            if (updated !== readme) {
+              fs.writeFileSync("README.md", updated, "utf8");
+              console.log("Updated README.md with", lines.length, "items.");
+            } else {
+              console.log("README.md already up to date.");
+            }
+          })().catch((err) => {
+            console.error(err);
+            process.exit(1);
+          });
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet README.md; then
+            echo "No activity changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update recent GitHub activity"
+          git push
